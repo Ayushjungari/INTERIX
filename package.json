@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "render-build": "npm install && npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
-  "start": "node backend/src/server.js"
-},
+    "render-build": "npm install && npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "node backend/src/server.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ayushjungari/INTERVO.git"
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Ayushjungari/INTERVO#readme",
   "dependencies": {
     "@clerk/clerk-react": "^5.59.3",
+    "lucide-react": "^0.564.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   }

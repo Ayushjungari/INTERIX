@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.59.3",
+    "@tailwindcss/vite": "^4.1.14",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "react-router": "^7.9.4",
+    "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "4.3.1",
     "baseline-browser-mapping": "^2.9.14",
+    "daisyui": "^5.3.10",
     "vite": "5.4.8"
   }
 }

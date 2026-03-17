@@ -4,6 +4,7 @@ import { UserButton } from "@clerk/clerk-react";
 
 function Navbar() {
   const location = useLocation();
+  
 
   console.log(location);
 

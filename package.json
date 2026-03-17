@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Ayushjungari/INTERVO#readme",
   "dependencies": {
     "@clerk/clerk-react": "^5.59.3",
+    "@monaco-editor/react": "^4.7.0",
     "lucide-react": "^0.564.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"

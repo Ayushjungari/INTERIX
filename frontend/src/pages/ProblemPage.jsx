@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { PROBLEMS } from "../data/problems";
 import Navbar from "../components/Navbar";
-
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import ProblemDescription from "../components/ProblemDescription";
 import OutputPanel from "../components/OutputPanel";
 import CodeEditorPanel from "../components/CodeEditorPanel";
-
+import { executeCode, submitCode } from "../lib/piston";
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
 
@@ -15,18 +14,22 @@ function ProblemPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [currentProblemId, setCurrentProblemId] = useState("two-sum");
+  const initialId = id && PROBLEMS[id] ? id : "two-sum";
+  const [currentProblemId, setCurrentProblemId] = useState(initialId);
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
-  const [code, setCode] = useState(PROBLEMS["two-sum"].starterCode.javascript);
+  const [code, setCode] = useState(PROBLEMS[initialId].starterCode.javascript);
   const [output, setOutput] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentProblem = PROBLEMS[currentProblemId];
 
+  // Sync when URL id or language changes; use fresh starter code for that problem+lang.
   useEffect(() => {
     if (id && PROBLEMS[id]) {
       setCurrentProblemId(id);
-      setCode(PROBLEMS[id].starterCode[selectedLanguage]);
+      const p = PROBLEMS[id];
+      setCode(p.starterCode[selectedLanguage] || p.starterCode.javascript);
       setOutput(null);
     }
   }, [id, selectedLanguage]);
@@ -34,68 +37,48 @@ function ProblemPage() {
   const handleLanguageChange = (e) => {
     const lang = e.target.value;
     setSelectedLanguage(lang);
-    setCode(currentProblem.starterCode[lang]);
+    const p = PROBLEMS[currentProblemId];
+    setCode(p.starterCode[lang] || "");
     setOutput(null);
   };
 
-  const handleProblemChange = (newId) => {
-    navigate(`/problem/${newId}`);
-  };
+  const handleProblemChange = (newId) => navigate(`/problem/${newId}`);
 
   const triggerConfetti = () => {
-    confetti({
-      particleCount: 120,
-      spread: 200,
-      origin: { y: 0.6 },
-    });
+    confetti({ particleCount: 120, spread: 200, origin: { y: 0.6 } });
   };
 
-  // MAIN RUN FUNCTION
-const handleRun = async () => {
-  try {
+  const handleRun = async () => {
     setIsRunning(true);
-    setOutput("Running...");
-
-    const finalCode = `
-${code}
-
-// Auto Test Runner
-const tests = [
-  { nums: [2,7,11,15], target: 9 },
-  { nums: [3,2,4], target: 6 },
-  { nums: [3,3], target: 6 }
-];
-
-for (const t of tests) {
-  const res = twoSum(t.nums, t.target);
-  console.log(JSON.stringify(res));
-}
-`;
-
-    const res = await fetch("http://localhost:8000/api/code/run", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        code: finalCode,
-        input: "",
-      }),
-    });
-
-    const data = await res.json();
-
-    console.log("RESULT:", data);
-
-    setOutput(data.stdout || data.stderr || "No Output");
-
-  } catch (err) {
-    console.error(err);
-    setOutput("Execution Failed");
-  } finally {
+    setOutput(null);
+    const result = await executeCode(selectedLanguage, code);
+    setOutput(result);
     setIsRunning(false);
-  }
-};
+
+    if (!result.success) toast.error(result.verdict || "Execution failed");
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setOutput(null);
+    const result = await submitCode(selectedLanguage, code, currentProblemId);
+    setOutput(result);
+    setIsSubmitting(false);
+
+    if (result.verdict === "Accepted") {
+      triggerConfetti();
+      toast.success(`Accepted (${result.testsPassed}/${result.testsTotal})`);
+    } else if (result.verdict === "Wrong Answer") {
+      toast.error(`Wrong Answer (${result.testsPassed}/${result.testsTotal})`);
+    } else if (result.verdict === "Ran") {
+      toast(
+        "Ran your program. Hidden-test judging for Java/C++ requires a per-problem harness.",
+        { icon: "ℹ️" }
+      );
+    } else {
+      toast.error(result.verdict || "Submission failed");
+    }
+  };
 
   return (
     <div className="h-screen bg-base-100 flex flex-col">
@@ -103,8 +86,7 @@ for (const t of tests) {
 
       <div className="flex-1">
         <PanelGroup direction="horizontal">
-          {/* LEFT */}
-          <Panel defaultSize={40}>
+          <Panel defaultSize={40} minSize={25}>
             <ProblemDescription
               problem={currentProblem}
               currentProblemId={currentProblemId}
@@ -115,25 +97,24 @@ for (const t of tests) {
 
           <PanelResizeHandle className="w-2 bg-base-300" />
 
-          {/* RIGHT */}
           <Panel defaultSize={60}>
             <PanelGroup direction="vertical">
-              {/* EDITOR */}
-              <Panel defaultSize={70}>
+              <Panel defaultSize={65} minSize={30}>
                 <CodeEditorPanel
                   selectedLanguage={selectedLanguage}
                   code={code}
                   isRunning={isRunning}
+                  isSubmitting={isSubmitting}
                   onLanguageChange={handleLanguageChange}
                   onCodeChange={setCode}
                   onRunCode={handleRun}
+                  onSubmitCode={handleSubmit}
                 />
               </Panel>
 
               <PanelResizeHandle className="h-2 bg-base-300" />
 
-              {/* OUTPUT */}
-              <Panel defaultSize={30}>
+              <Panel defaultSize={35} minSize={20}>
                 <OutputPanel output={output} />
               </Panel>
             </PanelGroup>

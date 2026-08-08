@@ -1,0 +1,8 @@
+{
+  "name": "intervo",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm ci && npm run build && cd ../backend && npm ci",
+    "start": "cd backend && npm start"
+  }
+}

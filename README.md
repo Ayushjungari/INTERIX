@@ -200,7 +200,7 @@ INTERIX/
 ### 📥 Clone
 
 ```bash
-git clone <your-INTERIX-repository-url>
+git clone https://github.com/Ayushjungari/INTERIX.git
 cd INTERIX
 ```
 
@@ -336,14 +336,11 @@ Drop captures into `docs/screenshots/` and the references below will resolve.
 
 ### 🖼️ Screenshot placeholders
 
-* **Landing** — `docs/screenshots/landing.png`
-* **Dashboard** — `docs/screenshots/dashboard.png`
-* **Interview Room (video + chat)** — `docs/screenshots/session.png`
-* **Problem Workspace (Monaco + verdict)** — `docs/screenshots/problem.png`
+* **Landing** — `<img width="2879" height="1357" alt="image" src="https://github.com/user-attachments/assets/0a59ad18-99a1-4c60-bd74-57b261eb0f0e" />`
+* **Dashboard** — `<img width="2879" height="1369" alt="image" src="https://github.com/user-attachments/assets/1a51e838-930b-4a06-ac81-8199a7cfe733" />`
+* **Interview Room (video + chat)** — `<img width="2878" height="1361" alt="image" src="https://github.com/user-attachments/assets/efd46eb0-e675-473e-b041-7c415253e9b8" />`
 
 **🔗 Repository:** `https://github.com/Ayushjungari/INTERIX`
-
-**🌐 Live demo:** Not configured — no deployment URL is present in the repository. Add one here once deployed.
 
 ---
 

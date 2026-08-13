@@ -1,12 +1,12 @@
 # INTERIX
 
-> Real-time technical interview platform — live video, chat, and a multi-language code editor with server-graded hidden tests.
+> 🎯 Real-time technical interview platform — live video, chat, and a multi-language code editor with server-graded hidden tests.
 
-**React · Express · MongoDB · Stream · Clerk · Judge0**
+**⚛️ React · 🚂 Express · 🍃 MongoDB · 📹 Stream · 🔐 Clerk · ⚙️ Judge0**
 
 ---
 
-## 1. Overview
+## 1. 🎯 Overview
 
 INTERIX is a real-time technical interview platform. A host opens a session around a specific DSA problem, a second user joins it, and both sides share a live video call, a chat channel, and a Monaco-based code editor in the same room.
 
@@ -16,36 +16,36 @@ What makes it technically interesting: authentication, real-time transport, and 
 
 ---
 
-## 2. Features
+## 2. ✨ Features
 
-### Live interview sessions
+### 🎥 Live interview sessions
 
 * Create a session by picking a problem and a difficulty (easy / medium / hard).
 * Browse all currently active sessions and join one as the participant.
 * One host + one participant per session; the host is the only one who can end it.
 * Ended sessions move to completed and show up in each participant's recent history.
 
-### Real-time communication
+### 💬 Real-time communication
 
 * WebRTC video call (camera + microphone controls) powered by Stream Video.
 * Text chat channel scoped to the same session, powered by Stream Chat.
 * Both are keyed by the same `callId`, so joining the session joins both surfaces at once.
 
-### Coding workspace
+### 💻 Coding workspace
 
 * Monaco editor with resizable panels: problem description · editor · output.
 * Four languages: JavaScript, Python, Java, C++, each with its own starter code.
 * Run executes your code as-is; Submit runs it against hidden test cases and returns a verdict (`Accepted`, `Wrong Answer`, `Runtime Error`, `Compilation Error`).
 * Per-test detail on failure, and confetti on Accepted.
 
-### Accounts
+### 🔐 Accounts
 
 * Clerk-hosted sign-in / sign-up; the SPA gates every route behind an active session.
 * Users are mirrored into MongoDB and into Stream automatically — via a Clerk webhook, with a live fallback if the webhook was ever missed.
 
 ---
 
-## 3. Tech Stack
+## 3. 🛠️ Tech Stack
 
 | Technology                    | Layer           | Responsibility & why it's here                                                                                                         |
 | ----------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
@@ -62,11 +62,11 @@ What makes it technically interesting: authentication, real-time transport, and 
 | **Inngest**                   | Background jobs | Durable, retryable handling of Clerk `user.created` / `user.deleted` webhooks for user syncing.                                        |
 | **axios**                     | Both            | HTTP client — a configured instance on the frontend, and the Judge0 caller on the backend.                                             |
 
-> **Naming note:** `frontend/src/lib/piston.js` is a leftover filename. Code execution actually goes through **Judge0**, not Piston. Worth renaming.
+> 📝 **Naming note:** `frontend/src/lib/piston.js` is a leftover filename. Code execution actually goes through **Judge0**, not Piston. Worth renaming.
 
 ---
 
-## 4. Architecture
+## 4. 🏗️ Architecture
 
 ```mermaid
 flowchart TD
@@ -88,7 +88,7 @@ flowchart TD
     ING --> ST
 ```
 
-### How responsibilities are split
+### 🔄 How responsibilities are split
 
 * **Client** renders the UI, holds the Clerk session, calls the REST API, and — once it has a server-minted token — talks to Stream directly for media and chat. Media never transits the Express server.
 * **Express API** owns session lifecycle (create / join / end / list), authorises every request through Clerk, provisions Stream call + chat channel resources, and proxies code execution. It never trusts a client-supplied user id.
@@ -100,7 +100,7 @@ flowchart TD
 
 ---
 
-## 5. Project Structure
+## 5. 📁 Project Structure
 
 ```text
 INTERIX/
@@ -169,7 +169,7 @@ INTERIX/
             └── problems.js              # public problem metadata + starter code (no answers)
 ```
 
-### Important files
+### 📌 Important files
 
 | Path                                           | Why it matters                                                         |
 | ---------------------------------------------- | ---------------------------------------------------------------------- |
@@ -182,9 +182,9 @@ INTERIX/
 
 ---
 
-## 6. Installation & Setup
+## 6. ⚙️ Installation & Setup
 
-### Prerequisites
+### 📋 Prerequisites
 
 | Requirement      | Notes                                                    |
 | ---------------- | -------------------------------------------------------- |
@@ -197,21 +197,21 @@ INTERIX/
 | Inngest account  | Optional locally — see the env notes below.              |
 | Git              | —                                                        |
 
-### Clone
+### 📥 Clone
 
 ```bash
 git clone <your-INTERIX-repository-url>
 cd INTERIX
 ```
 
-### Install dependencies
+### 📦 Install dependencies
 
 ```bash
 cd backend && npm install
 cd ../frontend && npm install
 ```
 
-### Environment variables
+### 🔑 Environment variables
 
 Create `backend/.env` and `frontend/.env` from the provided examples.
 
@@ -253,7 +253,7 @@ INNGEST_SIGNING_KEY=xxx
 | `RAPID_API_KEY` / `RAPID_API_HOST`           | Judge0 credentials used by `/api/code/*`.             | Yes      |
 | `INNGEST_EVENT_KEY` / `INNGEST_SIGNING_KEY`  | Clerk → Inngest webhook auth.                         | No (dev) |
 
-> **Known gap:** `RAPID_API_KEY` / `RAPID_API_HOST` are read by `backend/src/routes/codeRoutes.js` but are missing from `backend/.env.example`. Add them there — without them, Run and Submit fail.
+> ⚠️ **Known gap:** `RAPID_API_KEY` / `RAPID_API_HOST` are read by `backend/src/routes/codeRoutes.js` but are missing from `backend/.env.example`. Add them there — without them, Run and Submit fail.
 
 #### Frontend — `frontend/.env`
 
@@ -271,7 +271,7 @@ VITE_STREAM_API_KEY=xxx
 
 All three are `VITE_`-prefixed and therefore public by design — never put a secret here.
 
-### Database setup
+### 🗄️ Database setup
 
 No migrations or seed step.
 
@@ -281,7 +281,7 @@ Unique indexes on `User.email` and `User.clerkId` are declared in the schema.
 
 The problem catalog is code, not data — see `backend/src/data/problems.js`.
 
-### Run locally
+### ▶️ Run locally
 
 Two terminals:
 
@@ -305,7 +305,7 @@ Health check:
 curl http://localhost:8000/health
 ```
 
-### Production build
+### 🚀 Production build
 
 From the repository root (single-service deploy — Express serves the built SPA when `NODE_ENV=production`):
 
@@ -316,38 +316,38 @@ npm start
 
 ---
 
-## 7. Usage
+## 7. 🚀 Usage
 
-1. Sign in on the landing page via Clerk. You're redirected to `/dashboard`.
-2. Dashboard shows your stats, currently active sessions, and your recent completed sessions.
-3. Create a session — pick a problem and a difficulty. A `callId` is generated and the Stream call + chat channel are provisioned.
-4. Or join one — open an active session from the list. Sessions are capped at two people, and you can't join your own.
-5. In the room — video connects automatically, chat is available alongside it, and the problem + editor panels are resizable.
-6. Solve — choose a language, write your solution, hit **Run** for a raw execution or **Submit** to be graded against hidden tests. The output panel shows the verdict and per-test results.
-7. End — only the host can end the session. It flips to completed and appears in both users' recent history.
+1. 🔐 Sign in on the landing page via Clerk. You're redirected to `/dashboard`.
+2. 📊 Dashboard shows your stats, currently active sessions, and your recent completed sessions.
+3. 📝 Create a session — pick a problem and a difficulty. A `callId` is generated and the Stream call + chat channel are provisioned.
+4. 👥 Or join one — open an active session from the list. Sessions are capped at two people, and you can't join your own.
+5. 🎥 In the room — video connects automatically, chat is available alongside it, and the problem + editor panels are resizable.
+6. 💻 Solve — choose a language, write your solution, hit **Run** for a raw execution or **Submit** to be graded against hidden tests. The output panel shows the verdict and per-test results.
+7. 🏁 End — only the host can end the session. It flips to completed and appears in both users' recent history.
 
 ---
 
-## 8. Screenshots / Demo
+## 8. 📸 Screenshots / Demo
 
 The repository does not currently ship application screenshots.
 
 Drop captures into `docs/screenshots/` and the references below will resolve.
 
-### Screenshot placeholders
+### 🖼️ Screenshot placeholders
 
 * **Landing** — `docs/screenshots/landing.png`
 * **Dashboard** — `docs/screenshots/dashboard.png`
 * **Interview Room (video + chat)** — `docs/screenshots/session.png`
 * **Problem Workspace (Monaco + verdict)** — `docs/screenshots/problem.png`
 
-**Repository:** `https://github.com/Ayushjungari/INTERIX`
+**🔗 Repository:** `https://github.com/Ayushjungari/INTERIX`
 
-**Live demo:** Not configured — no deployment URL is present in the repository. Add one here once deployed.
+**🌐 Live demo:** Not configured — no deployment URL is present in the repository. Add one here once deployed.
 
 ---
 
-## 9. API Reference
+## 9. 🔌 API Reference
 
 **Base URL:** `http://localhost:8000` · **API prefix:** `/api`
 
@@ -367,7 +367,7 @@ Authenticated routes require a Clerk session token (`Authorization: Bearer <toke
 | `POST` | `/api/code/submit`        | Grade code against hidden tests.                   | None      |
 | `ANY`  | `/api/inngest`            | Inngest handler for Clerk webhooks.                | Signature |
 
-### `POST /api/sessions` — create a session
+### 📝 `POST /api/sessions` — create a session
 
 #### Request
 
@@ -397,7 +397,7 @@ Authenticated routes require a Clerk session token (`Authorization: Bearer <toke
 
 **Errors:** `400` missing problem or difficulty · `401` unauthenticated · `500` upstream failure.
 
-### `POST /api/sessions/:id/join` — join as participant
+### 👥 `POST /api/sessions/:id/join` — join as participant
 
 No body.
 
@@ -405,13 +405,13 @@ Returns `200` with the updated session; the caller is added to the Stream chat c
 
 **Errors:** `404` session not found · `400` session already completed · `400` host cannot join their own session · `409` session is full.
 
-### `POST /api/sessions/:id/end` — end the session
+### 🏁 `POST /api/sessions/:id/end` — end the session
 
 No body. Returns `200`.
 
 **Errors:** `403` caller is not the host · `404` not found · `400` already completed.
 
-### `GET /api/chat/token` — Stream credentials
+### 💬 `GET /api/chat/token` — Stream credentials
 
 #### Response `200`
 
@@ -426,7 +426,7 @@ No body. Returns `200`.
 
 The `userId` is the Clerk id, matching the user record in the Stream dashboard.
 
-### `POST /api/code/run` — execute as-is
+### ▶️ `POST /api/code/run` — execute as-is
 
 #### Request
 
@@ -452,7 +452,7 @@ The `userId` is the Clerk id, matching the user record in the Stream dashboard.
 
 Failures return `success: false` with error and a Judge0 verdict string.
 
-### `POST /api/code/submit` — grade against hidden tests
+### 🧪 `POST /api/code/submit` — grade against hidden tests
 
 #### Request
 
@@ -488,45 +488,45 @@ The server wraps the submitted function with a test driver, runs it, and diffs t
 
 ---
 
-## 10. Engineering Decisions
+## 10. 🧠 Engineering Decisions
 
-### Clerk as the identity source of truth, MongoDB as a mirror
+### 🔐 Clerk as the identity source of truth, MongoDB as a mirror
 
 **Why:** Auth is high-risk, low-differentiation work. Clerk owns credentials, sessions, and token verification; the app stores only a thin user document keyed by `clerkId` so sessions can hold real foreign keys.
 
 **Trade-off:** A hard third-party dependency and a two-system consistency problem. Mitigated by the self-healing path in `protectRoute` — if the Mongo record is missing, it fetches the user from Clerk and upserts it, so a dropped webhook can't break session creation.
 
-### Stream instead of hand-rolled WebRTC
+### 📹 Stream instead of hand-rolled WebRTC
 
 **Why:** Peer-to-peer video at more than a demo level means signalling, TURN, reconnection, and device handling. Stream provides an SFU plus chat with persistence behind one SDK, and media flows browser ↔ Stream directly, keeping the API server off the media path.
 
 **Trade-off:** Vendor lock-in and per-minute cost; call semantics are constrained to what the SDK exposes.
 
-### One `callId` unifying video, chat, and the session document
+### 🔗 One `callId` unifying video, chat, and the session document
 
 **Why:** The id generated at session creation names the Stream call, the messaging channel, and the `callId` field on the session. Joining a session therefore joins all three surfaces with no extra lookups or mapping tables.
 
 **Trade-off:** The three systems are coupled through an app-generated string with no cross-system referential integrity — a partially-failed create can leave orphaned Stream resources.
 
-### Hidden tests stay on the server
+### 🔒 Hidden tests stay on the server
 
 **Why:** `frontend/src/data/problems.js` carries only descriptions and starter code; expected outputs and test drivers live in `backend/src/data/problems.js`. The browser physically cannot read the answer key, and `buildSubmission()` / `parseVerdict()` make grading deterministic and language-agnostic.
 
 **Trade-off:** Every new problem needs coordinated edits in two files, and adding a language means writing a new driver.
 
-### Judge0 for untrusted execution
+### ⚙️ Judge0 for untrusted execution
 
 **Why:** Running arbitrary user code in the API process is a direct RCE path. An earlier iteration shelled out with `child_process` (see `CHANGELOG.md`); it was replaced with a remote sandbox that enforces its own time and memory limits.
 
 **Trade-off:** Network latency per run, a rate-limited external quota, and the API blocks on `wait=true` synchronous submissions.
 
-### Inngest for webhook-driven user sync
+### 🔄 Inngest for webhook-driven user sync
 
 **Why:** Clerk `user.created` / `user.deleted` events must survive transient database or Stream failures. Inngest gives durable delivery and retries without running a queue.
 
 **Trade-off:** Another service in the loop, and eventual consistency — which is exactly why the `protectRoute` fallback exists.
 
-### TanStack Query for server state
+### ⚡ TanStack Query for server state
 
 **Why:** Session lists are server state, not component state. Caching, deduping, and invalidate-after-mutate come free, keeping the dashboard fresh without manual effect wiring.
 
@@ -534,7 +534,7 @@ The server wraps the submitted function with a test driver, runs it, and diffs t
 
 ---
 
-## 11. Testing
+## 11. 🧪 Testing
 
 There is no automated test suite in this repository — no test framework, no test files, and no test script in either `package.json`.
 
@@ -544,9 +544,9 @@ Adding automated coverage is the highest-value next step — see below.
 
 ---
 
-## 12. Limitations & Future Improvements
+## 12. 🚧 Limitations & Future Improvements
 
-### Current limitations
+### ⚠️ Current limitations
 
 * No automated tests or CI. All verification is manual.
 * The code editor is not synchronised between participants. Each side edits its own buffer; only video and chat are shared. This is the largest gap versus a true collaborative interview tool.
@@ -559,9 +559,9 @@ Adding automated coverage is the highest-value next step — see below.
 * Fixed problem catalog defined in code, with no admin UI.
 * Stale naming: `frontend/src/lib/piston.js` and parts of `CHANGELOG.md` still reference Piston, which is no longer used.
 
-> **Secrets hygiene:** Ensure `backend/.env` and `frontend/.env` are never committed, and rotate any key that has been shared.
+> 🔒 **Secrets hygiene:** Ensure `backend/.env` and `frontend/.env` are never committed, and rotate any key that has been shared.
 
-### Future improvements
+### 🚀 Future improvements
 
 | Priority   | Improvement                                                                                                                                                |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -578,4 +578,4 @@ Adding automated coverage is the highest-value next step — see below.
 
 ---
 
-**Built by Ayush Jungari · Report an issue**
+**👨‍💻 Built by Ayush Jungari · Report an issue**

@@ -328,22 +328,6 @@ npm start
 
 ---
 
-## 8. 📸 Screenshots / Demo
-
-The repository does not currently ship application screenshots.
-
-Drop captures into `docs/screenshots/` and the references below will resolve.
-
-### 🖼️ Screenshot placeholders
-
-* **Landing** — `<img width="2879" height="1357" alt="image" src="https://github.com/user-attachments/assets/0a59ad18-99a1-4c60-bd74-57b261eb0f0e" />`
-* **Dashboard** — `<img width="2879" height="1369" alt="image" src="https://github.com/user-attachments/assets/1a51e838-930b-4a06-ac81-8199a7cfe733" />`
-* **Interview Room (video + chat)** — `<img width="2878" height="1361" alt="image" src="https://github.com/user-attachments/assets/efd46eb0-e675-473e-b041-7c415253e9b8" />`
-
-**🔗 Repository:** `https://github.com/Ayushjungari/INTERIX`
-
----
-
 ## 9. 🔌 API Reference
 
 **Base URL:** `http://localhost:8000` · **API prefix:** `/api`

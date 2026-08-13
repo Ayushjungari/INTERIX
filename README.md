@@ -328,7 +328,7 @@ npm start
 
 ---
 
-## 9. 🔌 API Reference
+## 8. 🔌 API Reference
 
 **Base URL:** `http://localhost:8000` · **API prefix:** `/api`
 
@@ -469,7 +469,7 @@ The server wraps the submitted function with a test driver, runs it, and diffs t
 
 ---
 
-## 10. 🧠 Engineering Decisions
+## 9. 🧠 Engineering Decisions
 
 ### 🔐 Clerk as the identity source of truth, MongoDB as a mirror
 
@@ -515,7 +515,7 @@ The server wraps the submitted function with a test driver, runs it, and diffs t
 
 ---
 
-## 11. 🧪 Testing
+## 10. 🧪 Testing
 
 There is no automated test suite in this repository — no test framework, no test files, and no test script in either `package.json`.
 
@@ -525,7 +525,7 @@ Adding automated coverage is the highest-value next step — see below.
 
 ---
 
-## 12. 🚧 Limitations & Future Improvements
+## 11. 🚧 Limitations & Future Improvements
 
 ### ⚠️ Current limitations
 

@@ -253,7 +253,6 @@ INNGEST_SIGNING_KEY=xxx
 | `RAPID_API_KEY` / `RAPID_API_HOST`           | Judge0 credentials used by `/api/code/*`.             | Yes      |
 | `INNGEST_EVENT_KEY` / `INNGEST_SIGNING_KEY`  | Clerk → Inngest webhook auth.                         | No (dev) |
 
-> ⚠️ **Known gap:** `RAPID_API_KEY` / `RAPID_API_HOST` are read by `backend/src/routes/codeRoutes.js` but are missing from `backend/.env.example`. Add them there — without them, Run and Submit fail.
 
 #### Frontend — `frontend/.env`
 
